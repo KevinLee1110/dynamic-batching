@@ -1,5 +1,5 @@
 # dynamic-batching
-The official repo for the paper "Optimizing LLM Inference Throughput via Memory-aware and SLA-constrained Dynamic Batching"
+The official repo for the paper "[Optimizing LLM Inference Throughput via Memory-aware and SLA-constrained Dynamic Batching](https://arxiv.org/abs/2503.05248)"
 
 The increasing adoption of large language models (LLMs) necessitates inference serving systems that can deliver both high throughput and low latency. Deploying LLMs with hundreds of billions of parameters on memory-constrained GPUs exposes significant limitations in static batching methods. Current inference serving systems often treat batch sizes as fixed hyper-parameters, hindering real-time adaptation to varying system conditions. In this paper, we propose a **dynamic batching** method that continuously monitors memory utilization and adheres to service-level agreements (SLAs) to enable real-time batch size configuration adjustment. The method comprises two core components: a memory-aware batch scheduler that dynamically allocates GPU resources and a latency feedback mechanism that optimizes decoding processes under SLA constraints. The numerical experiments demonstrate **throughput gains of 8% to 28% and capacity improvements of 22%** compared to traditional static batching methods, while maintaining full compatibility with existing inference infrastructure. These results highlight the effectiveness of dynamic batching in balancing computational efficiency and quality-of-service requirements for contemporary LLM deployment scenarios.
 
@@ -44,8 +44,8 @@ class Scheduler:
         new_max_num_seqs = self.scheduler_config.max_num_seqs
         
         # Dynamic batching
-        # params (dynamic_batching_enabled, dynamic_batching_memory_factor, batchsize_lower, batch_size_upper) can be added in scheduler_config
-        if self.scheduler_config.dynamic_batching_enabled:
+        # params (enable_dynamic_batching, dynamic_batching_memory_factor, batchsize_lower, batch_size_upper) can be added in scheduler_config
+        if self.scheduler_config.enable_dynamic_batching:
             new_max_num_seqs = self.prev_max_num_seqs
 
             # Calculate new max_num_seqs when reqs are arrived
@@ -65,7 +65,7 @@ class Scheduler:
         # Include running requests to the budget.
         budget = SchedulingBudget(
             token_budget=self.scheduler_config.max_num_batched_tokens,
-            max_num_seqs=self.new_max_num_seqs,  # update max_num_seqs
+            max_num_seqs=new_max_num_seqs,  # update max_num_seqs
         )
 		    ...
 ```
@@ -86,4 +86,4 @@ If you find our work helpful, feel free to give us a cite.
 
 ## License
 
-This code repository is released under the Apache 2.0 License .
+This code repository is released under the Apache 2.0 License.
