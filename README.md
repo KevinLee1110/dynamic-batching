@@ -82,6 +82,15 @@ The online SLA constrained dynamic batching algorithm can be instantiated in acc
 
 If you find our work helpful, feel free to give us a cite.
 
+```
+@article{pang2025optimizing,
+  title={Optimizing LLM Inference Throughput via Memory-aware and SLA-constrained Dynamic Batching},
+  author={Pang, Bowen and Li, Kai and Wang, Feifan},
+  journal={arXiv preprint arXiv:2503.05248},
+  year={2025}
+}
+```
+
 
 
 ## License
